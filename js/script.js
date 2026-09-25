@@ -581,7 +581,6 @@ function showToast(message) {
 
 // ========== ФОРМА TELEGRAM ==========
 const BOT_TOKEN = '8582743328:AAFfKXDSBiyiVO7dAbCd1-e2ogcjkvWLgS4';
-const CHAT_ID = '992638774';
 const CHAT_ID = '6209207346';
 
 document.getElementById('responseForm').addEventListener('submit', async (e) => {

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для Асии 💕</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- ЭКРАН-КОНВЕРТ (поверх всего, исчезает после клика) -->
+<div class="envelope-screen" id="envelopeScreen">
+    <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-body">
+            <div class="envelope-seal">💌</div>
+        </div>
+    </div>
+    <p class="envelope-hint">Нажми, чтобы открыть</p>
+</div>
+
+<!-- Курсор-сердечко (шлейф) -->
+<div class="cursor-heart" id="cursorHeart">💖</div>
+
+<!-- Салют/сердечки -->
+<canvas id="effectsCanvas"></canvas>
+
+<!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
+<div class="music-player" id="musicPlayer">
+    <button class="player-toggle" id="playerToggle">▶</button>
+    <div class="player-info">
+        <span class="player-title">nechaev — 18</span>
+        <div class="player-progress" id="playerProgress">
+            <div class="player-progress-bar" id="playerProgressBar"></div>
+        </div>
+    </div>
+    <span class="player-time" id="playerTime">0:00</span>
+</div>
+<audio id="bgMusic" loop>
+    <source src="assets/music/Nechaev%20-%2018.mp3" type="audio/mpeg">
+</audio>
+
+<button id="effectToggle" class="effect-btn" title="Сменить эффект">🎆</button>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="typing-text"></h1>
+        <p class="subtitle">Этот сайт создан специально для тебя</p>
+    </div>
+</section>
+
+<!-- ТАЙМЕР -->
+<section class="timer-section">
+    <h2 class="timer-title">Мы вместе уже</h2>
+    <div class="timer" id="timer">
+        <div class="timer-block">
+            <span class="timer-value" id="days">0</span>
+            <span class="timer-label">дней</span>
+        </div>
+        <div class="timer-block">
+            <span class="timer-value" id="hours">0</span>
+            <span class="timer-label">часов</span>
+        </div>
+        <div class="timer-block">
+            <span class="timer-value" id="minutes">0</span>
+            <span class="timer-label">минут</span>
+        </div>
+        <div class="timer-block">
+            <span class="timer-value" id="seconds">0</span>
+            <span class="timer-label">секунд</span>
+        </div>
+    </div>
+    <p class="timer-subtitle">...и каждая секунда — счастье 💕</p>
+</section>
+
+<!-- ПОЗДРАВЛЕНИЕ -->
+<section class="congrats-section">
+    <h2 class="congrats-title">С Днём Рождения, <span class="name-easter-egg" data-name="Асия">Асия</span>! 🎂</h2>
+    <div class="congrats-text" id="congratsText"></div>
+    <button class="share-btn" id="shareBtn">
+        <span>Поделиться этим сайтом 💌</span>
+    </button>
+</section>
+
+<!-- ТАЙМЛАЙН -->
+<section class="timeline">
+    <h2>Наши моменты</h2>
+    <div class="timeline-container">
+        <div class="timeline-item">
+            <img src="assets/img/first-meeting.jpg" alt="Первая встреча" class="lightbox-img">
+            <div class="timeline-text">
+                <h3>Первая встреча</h3>
+                <p>С этого всё началось...</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <img src="assets/img/1-week.jpg" alt="Неделя отношений" class="lightbox-img">
+            <div class="timeline-text">
+                <h3>Неделя</h3>
+                <p>Первая неделя вместе</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <img src="assets/img/1-month.jpg" alt="Месяц отношений" class="lightbox-img">
+            <div class="timeline-text">
+                <h3>Месяц</h3>
+                <p>Целый месяц счастья</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <img src="assets/img/half-year.jpg" alt="Полгода отношений" class="lightbox-img">
+            <div class="timeline-text">
+                <h3>Полгода</h3>
+                <p>Полгода вместе</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <img src="assets/img/1-year.jpg" alt="Год отношений" class="lightbox-img">
+            <div class="timeline-text">
+                <h3>Год</h3>
+                <p>Целый год любви</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 100 ПРИЧИН -->
+<section class="reasons-section">
+    <h2>100 причин, почему я тебя люблю</h2>
+    <p class="reasons-hint">Нажимай на карточки — они переворачиваются 💫</p>
+    <div class="reasons-grid" id="reasonsGrid"></div>
+</section>
+
+<!-- ВИДЕО -->
+<section class="video-section">
+    <h2>Особенное видео</h2>
+    <video controls poster="assets/img/1-year.jpg">
+        <source src="assets/video/special-video.MP4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+</section>
+
+<!-- ФОРМА -->
+<section class="response-section">
+    <h2>Напиши мне свой ответ</h2>
+    <form id="responseForm">
+        <textarea id="responseText" placeholder="Напиши здесь..." required></textarea>
+        <button type="submit">Отправить 💌</button>
+    </form>
+    <p id="formStatus"></p>
+</section>
+
+<!-- ФИНАЛЬНЫЙ ЭКРАН «17» -->
+<section class="final-section" id="finalSection">
+    <canvas id="finalCanvas"></canvas>
+    <h2 class="final-text">С днём рождения, Асия ❤️</h2>
+</section>
+
+<!-- ЛАЙТБОКС -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">✕</span>
+    <img class="lightbox-content" id="lightboxImg" alt="">
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

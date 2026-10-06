@@ -1,168 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Асии 💕</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-<!-- ЭКРАН-КОНВЕРТ (поверх всего, исчезает после клика) -->
-<div class="envelope-screen" id="envelopeScreen">
-    <div class="envelope" id="envelope">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Для Аси 💕</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ЭКРАН-КОНВЕРТ -->
+    <div class="envelope-screen" id="envelopeScreen">
+      <div class="envelope" id="envelope">
         <div class="envelope-flap"></div>
         <div class="envelope-body">
-            <div class="envelope-seal">💌</div>
+          <div class="envelope-seal">💌</div>
         </div>
+      </div>
+      <p class="envelope-hint">Нажми, чтобы открыть</p>
     </div>
-    <p class="envelope-hint">Нажми, чтобы открыть</p>
-</div>
 
-<!-- Курсор-сердечко (шлейф) -->
-<div class="cursor-heart" id="cursorHeart">💖</div>
+    <!-- Курсор-сердечко -->
+    <div class="cursor-heart" id="cursorHeart">💖</div>
 
-<!-- Салют/сердечки -->
-<canvas id="effectsCanvas"></canvas>
+    <!-- Салют/сердечки/конфетти/звёзды -->
+    <canvas id="effectsCanvas"></canvas>
 
-<!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
-<div class="music-player" id="musicPlayer">
-    <button class="player-toggle" id="playerToggle">▶</button>
-    <div class="player-info">
+    <!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
+    <div class="music-player" id="musicPlayer">
+      <button class="player-toggle" id="playerToggle">▶</button>
+      <div class="player-info">
         <span class="player-title">nechaev — 18</span>
         <div class="player-progress" id="playerProgress">
-            <div class="player-progress-bar" id="playerProgressBar"></div>
+          <div class="player-progress-bar" id="playerProgressBar"></div>
         </div>
+      </div>
+      <span class="player-time" id="playerTime">0:00</span>
     </div>
-    <span class="player-time" id="playerTime">0:00</span>
-</div>
-<audio id="bgMusic" loop>
-    <source src="assets/music/Nechaev%20-%2018.mp3" type="audio/mpeg">
-</audio>
+    <audio id="bgMusic" loop>
+      <source src="assets/music/Nechaev - 18.mp3" type="audio/mpeg" />
+    </audio>
 
-<button id="effectToggle" class="effect-btn" title="Сменить эффект">🎆</button>
+    <button id="effectToggle" class="effect-btn" title="Сменить эффект">
+      🎆
+    </button>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-content">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
         <h1 class="typing-text"></h1>
         <p class="subtitle">Этот сайт создан специально для тебя</p>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- ТАЙМЕР -->
-<section class="timer-section">
-    <h2 class="timer-title">Мы вместе уже</h2>
-    <div class="timer" id="timer">
+    <!-- ТАЙМЕР -->
+    <section class="timer-section">
+      <h2 class="timer-title">Мы вместе уже</h2>
+      <div class="timer" id="timer">
         <div class="timer-block">
-            <span class="timer-value" id="days">0</span>
-            <span class="timer-label">дней</span>
+          <span class="timer-value" id="days">0</span>
+          <span class="timer-label">дней</span>
         </div>
         <div class="timer-block">
-            <span class="timer-value" id="hours">0</span>
-            <span class="timer-label">часов</span>
+          <span class="timer-value" id="hours">0</span>
+          <span class="timer-label">часов</span>
         </div>
         <div class="timer-block">
-            <span class="timer-value" id="minutes">0</span>
-            <span class="timer-label">минут</span>
+          <span class="timer-value" id="minutes">0</span>
+          <span class="timer-label">минут</span>
         </div>
         <div class="timer-block">
-            <span class="timer-value" id="seconds">0</span>
-            <span class="timer-label">секунд</span>
+          <span class="timer-value" id="seconds">0</span>
+          <span class="timer-label">секунд</span>
         </div>
-    </div>
-    <p class="timer-subtitle">...и каждая секунда — счастье 💕</p>
-</section>
+      </div>
+      <p class="timer-subtitle">...и каждая секунда — счастье 💕</p>
+    </section>
 
-<!-- ПОЗДРАВЛЕНИЕ -->
-<section class="congrats-section">
-    <h2 class="congrats-title">С Днём Рождения, <span class="name-easter-egg" data-name="Асия">Асия</span>! 🎂</h2>
-    <div class="congrats-text" id="congratsText"></div>
-    <button class="share-btn" id="shareBtn">
+    <!-- ПОЗДРАВЛЕНИЕ -->
+    <section class="congrats-section">
+      <h2 class="congrats-title">
+        С Днём Рождения,
+        <span class="name-easter-egg" data-name="Аси">Аси</span>! 🎂
+      </h2>
+      <div class="congrats-text" id="congratsText"></div>
+      <button class="share-btn" id="shareBtn">
         <span>Поделиться этим сайтом 💌</span>
-    </button>
-</section>
+      </button>
+    </section>
 
-<!-- ТАЙМЛАЙН -->
-<section class="timeline">
-    <h2>Наши моменты</h2>
-    <div class="timeline-container">
+    <!-- ТАЙМЛАЙН -->
+    <section class="timeline">
+      <h2>Наши моменты</h2>
+      <div class="timeline-container">
         <div class="timeline-item">
-            <img src="assets/img/first-meeting.jpg" alt="Первая встреча" class="lightbox-img">
-            <div class="timeline-text">
-                <h3>Первая встреча</h3>
-                <p>С этого всё началось...</p>
-            </div>
+          <img
+            src="assets/img/moment1.jpg"
+            alt="Момент 1"
+            class="lightbox-img"
+          />
+          <div class="timeline-text">
+            <h3>С этого всё началось</h3>
+            <p>Момент, который изменил всё</p>
+          </div>
         </div>
         <div class="timeline-item">
-            <img src="assets/img/1-week.jpg" alt="Неделя отношений" class="lightbox-img">
-            <div class="timeline-text">
-                <h3>Неделя</h3>
-                <p>Первая неделя вместе</p>
-            </div>
+          <img
+            src="assets/img/moment2.jpg"
+            alt="Момент 2"
+            class="lightbox-img"
+          />
+          <div class="timeline-text">
+            <h3>Первые шаги вместе</h3>
+            <p>Каждый день — новое открытие</p>
+          </div>
         </div>
         <div class="timeline-item">
-            <img src="assets/img/1-month.jpg" alt="Месяц отношений" class="lightbox-img">
-            <div class="timeline-text">
-                <h3>Месяц</h3>
-                <p>Целый месяц счастья</p>
-            </div>
+          <img
+            src="assets/img/moment3.jpg"
+            alt="Момент 3"
+            class="lightbox-img"
+          />
+          <div class="timeline-text">
+            <h3>Мой любимый человек</h3>
+            <p>Ты стала моим миром</p>
+          </div>
         </div>
         <div class="timeline-item">
-            <img src="assets/img/half-year.jpg" alt="Полгода отношений" class="lightbox-img">
-            <div class="timeline-text">
-                <h3>Полгода</h3>
-                <p>Полгода вместе</p>
-            </div>
+          <img
+            src="assets/img/moment4.jpg"
+            alt="Момент 4"
+            class="lightbox-img"
+          />
+          <div class="timeline-text">
+            <h3>Наши тёплые дни</h3>
+            <p>Счастье в каждой мелочи</p>
+          </div>
         </div>
-        <div class="timeline-item">
-            <img src="assets/img/1-year.jpg" alt="Год отношений" class="lightbox-img">
-            <div class="timeline-text">
-                <h3>Год</h3>
-                <p>Целый год любви</p>
-            </div>
-        </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- 100 ПРИЧИН -->
-<section class="reasons-section">
-    <h2>100 причин, почему я тебя люблю</h2>
-    <p class="reasons-hint">Нажимай на карточки — они переворачиваются 💫</p>
-    <div class="reasons-grid" id="reasonsGrid"></div>
-</section>
+    <!-- 100 ПРИЧИН -->
+    <section class="reasons-section">
+      <h2>100 причин, почему я тебя люблю</h2>
+      <p class="reasons-hint">Нажимай на карточки — они переворачиваются 💫</p>
+      <div class="reasons-grid" id="reasonsGrid"></div>
+    </section>
 
-<!-- ВИДЕО -->
-<section class="video-section">
-    <h2>Особенное видео</h2>
-    <video controls poster="assets/img/1-year.jpg">
-        <source src="assets/video/special-video.MP4" type="video/mp4">
-        Ваш браузер не поддерживает видео.
-    </video>
-</section>
+    <!-- ВИДЕО -->
+    <section class="video-section">
+      <h2>Особенное видео</h2>
+      <div class="video-wrapper">
+        <video
+          id="specialVideo"
+          controls
+          preload="metadata"
+          poster="assets/img/half-year.jpg"
+        >
+          <source src="assets/video/video-asi.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
+      </div>
+      <p class="video-hint">
+        <span class="icon">🎬</span> Нажми — и музыка затихнет, останется только
+        наше видео
+      </p>
+    </section>
 
-<!-- ФОРМА -->
-<section class="response-section">
-    <h2>Напиши мне свой ответ</h2>
-    <form id="responseForm">
-        <textarea id="responseText" placeholder="Напиши здесь..." required></textarea>
+    <!-- ФОРМА -->
+    <section class="response-section">
+      <h2>Напиши мне свой ответ</h2>
+      <form id="responseForm">
+        <textarea
+          id="responseText"
+          placeholder="Напиши здесь..."
+          required
+        ></textarea>
         <button type="submit">Отправить 💌</button>
-    </form>
-    <p id="formStatus"></p>
-</section>
+      </form>
+      <p id="formStatus"></p>
+    </section>
 
-<!-- ФИНАЛЬНЫЙ ЭКРАН «17» -->
-<section class="final-section" id="finalSection">
-    <canvas id="finalCanvas"></canvas>
-    <h2 class="final-text">С днём рождения, Асия ❤️</h2>
-</section>
+    <!-- ФИНАЛЬНЫЙ ЭКРАН — ЗВЁЗДНОЕ НЕБО -->
+    <section class="final-section" id="finalSection">
+      <div class="stars-bg" id="starsBg"></div>
+      <div class="final-content">
+        <p class="final-line">Где-то среди миллиардов звёзд —</p>
+        <h2 class="final-text">ты моя самая яркая ✨</h2>
+        <p class="final-sign">С днём рождения, Аси 💫</p>
+      </div>
+    </section>
 
-<!-- ЛАЙТБОКС -->
-<div class="lightbox" id="lightbox">
-    <span class="lightbox-close" id="lightboxClose">✕</span>
-    <img class="lightbox-content" id="lightboxImg" alt="">
-</div>
+    <!-- ЛАЙТБОКС -->
+    <div class="lightbox" id="lightbox">
+      <span class="lightbox-close" id="lightboxClose">✕</span>
+      <img class="lightbox-content" id="lightboxImg" alt="" />
+    </div>
 
-<script src="js/script.js"></script>
-</body>
+    <script src="js/script.js"></script>
+  </body>
 </html>

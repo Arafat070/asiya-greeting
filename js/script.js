@@ -112,51 +112,138 @@ function startTimer() {
 
 // ========== ПОЗДРАВЛЕНИЕ ==========
 const congratsContent = `
-Аси, с днём рождения тебя. <span class="emoji">🎂</span>
+<p>Аси, с днём рождения тебя. <span class="emoji">🎂</span></p>
 
-Я долго думал, писать ли это, и всё-таки решил — потому что молчать больше не могу. 
-Этот сайт, каждое слово здесь — <span class="highlight">от чистого сердца</span>.
+<p>Я долго думал, писать ли это, и всё-таки решил — потому что молчать больше не могу. Этот сайт, каждое слово здесь — <span class="highlight">от чистого сердца</span>.</p>
 
-Прошло время. Много времени. Но знаешь, что я понял? Что ни один день 
-не прошёл без мысли о тебе. Я вспоминал твой смех, твой голос, твои глаза. 
-И с каждым днём всё яснее понимал — <span class="highlight">таких, как ты, не бывает некогда</span> 
-Такие, как ты, — одна на миллион. И я это упустил.
+<p>Прошло время. Много времени. Но знаешь, что я понял? Что ни один день не прошёл без мысли о тебе. Я вспоминал твой смех, твой голос, твои глаза. И с каждым днём всё яснее понимал — <span class="highlight">таких, как ты, не бывает некогда</span>. Такие, как ты, — одна на миллион. И я это упустил.</p>
 
-Сейчас я старше, спокойнее и честнее с собой. И я знаю точно: 
-если бы можно было повернуть время вспять — я бы сделал всё иначе. 
-<span class="highlight">Внимательнее. Терпеливее. Мягче. С тобой.</span>
+<p>Сейчас я старше, спокойнее и честнее с собой. И я знаю точно: если бы можно было повернуть время вспять — я бы сделал всё иначе. <span class="highlight">Внимательнее. Терпеливее. Мягче. С тобой.</span></p>
 
-Но раз уж судьба дала мне этот день — день твоего рождения — 
-я хочу использовать его, чтобы сказать: <span class="highlight">ты была самым важным 
-человеком в моей жизни.</span> И, честно, ты остаёшься им.
+<p>Но раз уж судьба дала мне этот день — день твоего рождения — я хочу использовать его, чтобы сказать: <span class="highlight">ты была самым важным человеком в моей жизни</span>. И, честно, ты остаёшься им.</p>
 
-С днём рождения, Аси. Ты — чудо. И я искренне верю, 
-что у тебя всё будет хорошо. <span class="emoji">💫</span>
+<p class="congrats-signature">С днём рождения, Аси.<br>Ты — чудо. И я искренне верю,<br>что у тебя всё будет хорошо. <span class="emoji">💫</span></p>
 `;
 
+// ========== ПЕЧАТЬ ПОЗДРАВЛЕНИЯ ПО БУКВАМ ==========
 function renderCongratsText() {
   const container = document.getElementById("congratsText");
-  const tokens = congratsContent
-    .split(/(\s+|<[^>]+>)/g)
-    .filter((t) => t.trim() !== "");
-  let delay = 0;
-  tokens.forEach((token) => {
-    if (token.startsWith("<") && token.endsWith(">")) {
-      container.insertAdjacentHTML("beforeend", token);
-    } else if (/^\s+$/.test(token)) {
-      container.insertAdjacentHTML("beforeend", " ");
-    } else {
-      const span = document.createElement("span");
-      span.className = "word";
-      span.textContent = token;
-      span.style.animationDelay = `${delay}s`;
-      container.appendChild(span);
-      container.insertAdjacentHTML("beforeend", " ");
-      delay += 0.08;
-    }
-  });
-}
+  container.innerHTML = "";
 
+  // Разбиваем на абзацы
+  const paragraphs = congratsContent.match(/<p[^>]*>[\s\S]*?<\/p>/g) || [];
+
+  // Собираем все токены: буквы, пробелы, теги, знаки
+  const tasks = [];
+  paragraphs.forEach((p, pIndex) => {
+    const isSignature = p.includes("congrats-signature");
+    const inner = p.replace(/^<p[^>]*>|<\/p>$/g, "");
+
+    // Разбиваем абзац на токены (теги и текст)
+    const tokens = inner.split(/(<[^>]+>)/g).filter((t) => t !== "");
+
+    tokens.forEach((token) => {
+      if (token.startsWith("<") && token.endsWith(">")) {
+        // Это HTML-тег — добавляем как атомарный элемент
+        tasks.push({ type: "tag", value: token, pIndex, isSignature });
+      } else {
+        // Разбиваем текст на отдельные символы
+        for (const ch of token) {
+          tasks.push({ type: "char", value: ch, pIndex, isSignature });
+        }
+      }
+    });
+
+    // Конец абзаца
+    tasks.push({ type: "paragraphEnd", pIndex, isSignature });
+  });
+
+  // Создаём абзацы заранее
+  const pElements = [];
+  paragraphs.forEach((p, i) => {
+    const pEl = document.createElement("div");
+    pEl.className = "congrats-paragraph";
+    if (p.includes("congrats-signature")) pEl.classList.add("signature");
+    container.appendChild(pEl);
+    pElements.push(pEl);
+  });
+
+  // Курсор
+  const cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  cursor.textContent = "|";
+
+  // Отслеживаем активный span (чтобы добавлять символы в нужный формат)
+  const activeSpans = {}; // pIndex -> { element, tagStyle }
+  let lastPIndex = -1;
+
+  // Скорость печати (мс)
+  const SPEED = 28;
+
+  let i = 0;
+
+  function typeNext() {
+    if (i >= tasks.length) {
+      cursor.remove();
+      return;
+    }
+
+    const task = tasks[i];
+    const pEl = pElements[task.pIndex];
+
+    if (task.type === "tag") {
+      // Открывающий или закрывающий тег — оборачиваем следующий текст
+      const tag = task.value;
+      const match = tag.match(/^<(\w+)[^>]*>$/);
+      const closeMatch = tag.match(/^<\/(\w+)>$/);
+
+      if (match) {
+        // Открывающий тег
+        const span = document.createElement("span");
+        span.className = match[1];
+        pEl.appendChild(span);
+        activeSpans[task.pIndex] = { element: span, tag: match[1] };
+      } else if (closeMatch) {
+        // Закрывающий тег
+        activeSpans[task.pIndex] = null;
+      }
+    } else if (task.type === "char") {
+      // Символ — пишем в активный span или прямо в абзац
+      const activeSpan = activeSpans[task.pIndex];
+      const target = activeSpan ? activeSpan.element : pEl;
+
+      if (task.value === "\n") {
+        target.appendChild(document.createElement("br"));
+      } else {
+        target.appendChild(document.createTextNode(task.value));
+      }
+    } else if (task.type === "paragraphEnd") {
+      // Переносим курсор в конец нового абзаца
+      activeSpans[task.pIndex] = null;
+    }
+
+    // Переставляем курсор
+    const currentP = pElements[task.pIndex];
+    if (cursor.parentNode !== currentP) {
+      currentP.appendChild(cursor);
+    } else {
+      currentP.appendChild(cursor); // перемещаем в конец
+    }
+
+    // Небольшая задержка после конца абзаца — пауза
+    let delay = SPEED;
+    if (task.type === "char" && /[.!?]/.test(task.value)) delay = SPEED * 12;
+    else if (task.type === "char" && /[,;:—]/.test(task.value))
+      delay = SPEED * 5;
+    else if (task.type === "paragraphEnd") delay = 400;
+
+    i++;
+    setTimeout(typeNext, delay);
+  }
+
+  // Старт после небольшой задержки
+  setTimeout(typeNext, 500);
+}
 // ========== 100 ПРИЧИН ==========
 const reasons = [
   "За твою улыбку",

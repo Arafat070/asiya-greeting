@@ -16,7 +16,7 @@ body {
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   background: radial-gradient(
     ellipse at top,
     #1a1a2e 0%,
@@ -133,7 +133,7 @@ section {
 }
 
 /* ============================================================
-   КНОПКИ (музыка + эффект)
+   КНОПКИ
    ============================================================ */
 .music-btn,
 .effect-btn {
@@ -186,6 +186,7 @@ section {
   text-align: center;
   padding: 40px 20px;
   background: transparent;
+  position: relative;
 }
 
 .hero-content {
@@ -237,6 +238,70 @@ section {
   margin-top: 25px;
   color: rgba(255, 255, 255, 0.75);
   font-weight: 300;
+}
+
+/* ============================================================
+   ПОДСКАЗКА «ЛИСТАЙ ВНИЗ»
+   ============================================================ */
+.scroll-down {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+  cursor: pointer;
+  opacity: 0;
+  animation:
+    scrollAppear 0.8s ease 2.5s forwards,
+    scrollFade 3s ease-in-out 3.3s infinite;
+}
+
+.scroll-text {
+  font-family: "Manrope", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.scroll-arrow {
+  font-size: 1.8rem;
+  color: #ff6b9d;
+  filter: drop-shadow(0 0 12px rgba(255, 107, 157, 0.8));
+  animation: arrowBounce2 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowBounce2 {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(12px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes scrollAppear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scrollFade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 /* ============================================================
@@ -320,7 +385,7 @@ section {
 }
 
 /* ============================================================
-   ПОЗДРАВЛЕНИЕ
+   ПОЗДРАВЛЕНИЕ — «ПИСЬМО»
    ============================================================ */
 .congrats-section {
   max-width: 900px;
@@ -334,156 +399,134 @@ section {
   margin-bottom: 40px;
 }
 
-/* ============================================================
-   ПОЗДРАВЛЕНИЕ — КРАСИВЫЙ ТЕКСТ
-   ============================================================ */
-/* ============================================================
-   ПОЗДРАВЛЕНИЕ — МОЛОДЁЖНЫЙ СТИЛЬ
-   ============================================================ */
 .congrats-text {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 70px 60px 60px 60px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 245, 0.97) 0%,
+    rgba(255, 240, 235, 0.95) 100%
+  );
+  border-radius: 8px;
+  box-shadow:
+    0 30px 80px rgba(255, 107, 157, 0.25),
+    0 0 0 1px rgba(255, 107, 157, 0.1),
+    inset 0 0 80px rgba(255, 200, 180, 0.2);
   font-family: "Manrope", sans-serif;
-  font-size: clamp(1rem, 2.2vw, 1.2rem);
-  font-weight: 400;
-  line-height: 1.85;
-  color: rgba(255, 255, 255, 0.92);
+  color: #3a2a35;
   text-align: left;
-  background: rgba(20, 20, 40, 0.55);
-  padding: 45px 50px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 107, 157, 0.3);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  box-shadow: 0 10px 40px rgba(255, 107, 157, 0.15);
-  letter-spacing: -0.01em;
+  overflow: hidden;
+  transform: rotate(-0.4deg);
+  transition: transform 0.5s;
 }
 
-/* Абзацы */
-.congrats-paragraph {
-  margin-bottom: 24px;
+.congrats-text:hover {
+  transform: rotate(0deg);
 }
 
-.congrats-paragraph:last-child {
+.congrats-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    transparent 0px,
+    transparent 41px,
+    rgba(255, 107, 157, 0.08) 41px,
+    rgba(255, 107, 157, 0.08) 42px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.congrats-text::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 42px;
+  width: 1px;
+  background: rgba(255, 107, 157, 0.25);
+  z-index: 0;
+}
+
+.letter-paragraph {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.9;
+  color: #3a2a35;
+  margin-bottom: 22px;
+  padding-left: 30px;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: letterLineAppear 1.2s ease forwards;
+}
+
+@keyframes letterLineAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter-paragraph:last-child {
   margin-bottom: 0;
 }
 
-.congrats-paragraph.signature {
-  margin-top: 35px;
-  text-align: right;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 1.05em;
-  line-height: 1.7;
-  padding-top: 25px;
-  border-top: 1px solid rgba(255, 107, 157, 0.3);
-}
-
-.congrats-paragraph.signature::before {
-  content: "— ";
-  color: #ff6b9d;
-  font-weight: 800;
-}
-
-.congrats-text .highlight {
-  color: #ff6b9d;
+.letter-paragraph:first-child {
+  font-family: "Caveat", cursive;
+  font-size: clamp(1.8rem, 4vw, 2.3rem);
   font-weight: 700;
-  text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+  line-height: 1.2;
+  color: #d6336c;
+  margin-bottom: 30px;
+  padding-left: 30px;
 }
 
-.congrats-text .emoji {
+.letter-paragraph .highlight {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-size: 1.35em;
+  color: #d6336c;
+  padding: 0 4px;
+  line-height: 1;
+  display: inline-block;
+  transform: rotate(-1deg);
+  transition: transform 0.3s;
+}
+
+.letter-paragraph .highlight:hover {
+  transform: rotate(1deg) scale(1.05);
+}
+
+.letter-paragraph .emoji {
   font-size: 1.15em;
   vertical-align: middle;
   margin-left: 3px;
 }
 
-/* Адаптив */
-@media (max-width: 768px) {
-  .congrats-text {
-    padding: 30px 25px;
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-
-  .congrats-paragraph.signature {
-    text-align: center;
-  }
+.letter-signature {
+  margin-top: 45px;
+  padding-top: 25px;
+  text-align: right;
+  font-family: "Caveat", cursive;
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: #d6336c;
+  border-top: 1px dashed rgba(214, 51, 108, 0.3);
+  padding-left: 30px;
 }
 
-@media (max-width: 480px) {
-  .congrats-text {
-    padding: 22px 18px;
-    font-size: 0.95rem;
-    border-radius: 18px;
-  }
-
-  .congrats-paragraph {
-    margin-bottom: 18px;
-  }
-}
-/* ============================================================
-   КУРСОР ПРИ ПЕЧАТИ
-   ============================================================ */
-.typing-cursor {
-  display: inline-block;
-  color: #ff6b9d;
-  font-weight: 700;
-  font-size: 1.1em;
-  line-height: 1;
-  margin-left: 2px;
-  animation: cursorBlink 0.9s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(255, 107, 157, 0.9);
-  vertical-align: middle;
-}
-
-@keyframes cursorBlink {
-  0%,
-  45% {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-  55%,
-  100% {
-    opacity: 0;
-    transform: scaleY(0.9);
-  }
-}
-/* Адаптив */
-@media (max-width: 768px) {
-  .congrats-text {
-    padding: 30px 25px;
-    font-size: 1.05rem;
-    line-height: 1.75;
-  }
-
-  .congrats-paragraph:first-child::first-letter {
-    font-size: 2.5em;
-  }
-
-  .congrats-paragraph.signature {
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .congrats-text {
-    padding: 22px 18px;
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .congrats-paragraph {
-    margin-bottom: 18px;
-  }
-
-  .congrats-paragraph:first-child::first-letter {
-    font-size: 2.2em;
-    margin-right: 8px;
-  }
-}
-@keyframes wordAppear {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.letter-signature::before {
+  content: "— ";
+  opacity: 0.7;
 }
 
 /* ============================================================
@@ -498,7 +541,7 @@ section {
   color: #ff6b9d;
   font-size: 1.05rem;
   font-weight: 600;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   cursor: pointer;
   transition: all 0.3s;
   backdrop-filter: blur(10px);
@@ -596,7 +639,6 @@ section {
 .timeline-item:nth-child(even) {
   flex-direction: row-reverse;
 }
-
 .timeline-item:nth-child(even) .timeline-text {
   text-align: right;
 }
@@ -615,7 +657,292 @@ section {
 }
 
 /* ============================================================
-   ВИДЕО — КРАСИВАЯ РАМКА
+   100 ПРИЧИН
+   ============================================================ */
+.reasons-section {
+  padding: 80px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.reasons-hint {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin-bottom: 40px;
+  font-size: 0.95rem;
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+.reason-card {
+  perspective: 1000px;
+  height: 130px;
+  cursor: pointer;
+}
+
+.reason-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+
+.reason-card.flipped .reason-card-inner {
+  transform: rotateY(180deg);
+}
+
+.reason-card-front,
+.reason-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+}
+
+.reason-card-front {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 157, 0.25),
+    rgba(255, 160, 122, 0.25)
+  );
+  border: 1px solid rgba(255, 107, 157, 0.5);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff6b9d;
+  backdrop-filter: blur(10px);
+}
+
+.reason-card-back {
+  background: linear-gradient(135deg, #ff6b9d, #ffa07a);
+  color: #fff;
+  transform: rotateY(180deg);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   ЗАПИСКА КАК В ФИЛЬМАХ — ЧИСТЫЕ СТИЛИ
+   ============================================================ */
+.film-note-section {
+  padding: 80px 20px;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.film-note-section h2 {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #ff6b9d;
+  margin-bottom: 15px;
+}
+
+.film-note-hint {
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin-bottom: 50px;
+  animation: hintPulseText 2s ease-in-out infinite;
+}
+
+@keyframes hintPulseText {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.film-note-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.film-note-card {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background: linear-gradient(180deg, #fff8ef 0%, #fff2e0 100%);
+  border-radius: 8px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(214, 51, 108, 0.15),
+    inset 0 0 60px rgba(255, 220, 190, 0.3);
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  padding: 0;
+}
+
+.film-note-card:hover {
+  transform: rotate(-1deg) scale(1.02);
+}
+
+.film-note-card.opened {
+  cursor: default;
+  transform: rotate(0deg) scale(1);
+}
+
+.film-note-card.opened:hover {
+  transform: rotate(0deg) scale(1);
+}
+
+.film-note-folded {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 30px;
+  text-align: center;
+}
+
+.film-note-card.opened .film-note-folded {
+  display: none;
+}
+
+.film-note-time {
+  font-family: "Manrope", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d6336c;
+  letter-spacing: 3px;
+  background: rgba(214, 51, 108, 0.1);
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(214, 51, 108, 0.3);
+}
+
+.film-note-movie {
+  font-family: "Manrope", sans-serif;
+  font-size: 0.95rem;
+  color: #3a2a35;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.film-note-arrow {
+  font-family: "Manrope", sans-serif;
+  font-size: 0.85rem;
+  color: rgba(214, 51, 108, 0.6);
+  font-style: italic;
+  margin-top: 15px;
+  animation: arrowBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+.film-note-content {
+  display: none;
+  padding: 0;
+}
+
+.film-note-card.opened .film-note-content {
+  display: block;
+}
+
+.film-note-inner {
+  padding: 40px 50px 50px 50px;
+  text-align: left;
+}
+
+.film-note-video {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 25px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(214, 51, 108, 0.25);
+  background: #000;
+  position: relative;
+}
+
+.film-note-video::before {
+  content: "🎬 Отрывок из фильма";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.film-note-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #000;
+}
+
+.film-note-quote {
+  font-family: "Manrope", sans-serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #3a2a35;
+  line-height: 1.7;
+  padding: 15px 20px;
+  border-left: 3px solid #d6336c;
+  background: rgba(214, 51, 108, 0.06);
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 25px;
+}
+
+.film-note-handwritten {
+  font-family: "Caveat", cursive;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  line-height: 1.6;
+  color: #2a1a25;
+  font-weight: 500;
+}
+
+.film-note-accent {
+  color: #d6336c;
+  font-weight: 700;
+  font-size: 1.15em;
+}
+
+.film-note-sign {
+  display: inline-block;
+  margin-top: 15px;
+  color: #d6336c;
+  font-weight: 700;
+  font-size: 1.15em;
+  transform: rotate(-2deg);
+}
+
+/* ============================================================
+   ВИДЕО
    ============================================================ */
 .video-section {
   padding: 80px 20px;
@@ -730,7 +1057,7 @@ section {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
   font-size: 1rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   resize: vertical;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -755,7 +1082,7 @@ section {
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Manrope", sans-serif;
   cursor: pointer;
   transition:
     transform 0.3s,
@@ -888,12 +1215,6 @@ section {
   transition: opacity 0.3s;
 }
 
-@media (max-width: 768px) {
-  .cursor-heart {
-    display: none;
-  }
-}
-
 /* ============================================================
    МУЗЫКАЛЬНЫЙ ПЛЕЕР
    ============================================================ */
@@ -987,7 +1308,6 @@ section {
   align-items: center;
   padding: 20px;
   backdrop-filter: blur(5px);
-  animation: fadeIn 0.3s;
 }
 
 .lightbox.active {
@@ -999,7 +1319,6 @@ section {
   max-height: 90%;
   border-radius: 15px;
   box-shadow: 0 20px 80px rgba(255, 107, 157, 0.4);
-  animation: zoomIn 0.3s;
 }
 
 .lightbox-close {
@@ -1020,105 +1339,8 @@ section {
   color: #ff6b9d;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.85);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 .lightbox-img {
   cursor: zoom-in;
-}
-
-/* ============================================================
-   100 ПРИЧИН
-   ============================================================ */
-.reasons-section {
-  padding: 80px 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.reasons-hint {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.6);
-  font-style: italic;
-  margin-bottom: 40px;
-  font-size: 0.95rem;
-}
-
-.reasons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 15px;
-}
-
-.reason-card {
-  perspective: 1000px;
-  height: 130px;
-  cursor: pointer;
-}
-
-.reason-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.7s;
-  transform-style: preserve-3d;
-}
-
-.reason-card.flipped .reason-card-inner {
-  transform: rotateY(180deg);
-}
-
-.reason-card-front,
-.reason-card-back {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  text-align: center;
-}
-
-.reason-card-front {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 107, 157, 0.25),
-    rgba(255, 160, 122, 0.25)
-  );
-  border: 1px solid rgba(255, 107, 157, 0.5);
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ff6b9d;
-  backdrop-filter: blur(10px);
-}
-
-.reason-card-back {
-  background: linear-gradient(135deg, #ff6b9d, #ffa07a);
-  color: #fff;
-  transform: rotateY(180deg);
-  font-size: 0.85rem;
-  font-weight: 500;
-  line-height: 1.4;
 }
 
 /* ============================================================
@@ -1172,11 +1394,7 @@ section {
   align-items: center;
   padding: 60px 20px;
   overflow: hidden;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(26, 26, 46, 0.5) 0%,
-    rgba(5, 5, 10, 0.95) 100%
-  );
+  background: transparent;
 }
 
 .stars-bg {
@@ -1254,6 +1472,40 @@ section {
   transform: translateY(0);
 }
 
+.final-hint {
+  margin-top: 50px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  padding: 12px 24px;
+  border: 1px dashed rgba(255, 107, 157, 0.4);
+  border-radius: 30px;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1.2s ease 3s;
+  animation: hintGlow 3s ease-in-out infinite 3s;
+}
+
+.final-section.visible .final-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes hintGlow {
+  0%,
+  100% {
+    border-color: rgba(255, 107, 157, 0.4);
+    box-shadow: 0 0 0 rgba(255, 107, 157, 0);
+  }
+  50% {
+    border-color: rgba(255, 107, 157, 0.9);
+    box-shadow: 0 0 25px rgba(255, 107, 157, 0.4);
+  }
+}
+
 .balloon {
   position: fixed;
   font-size: 40px;
@@ -1318,12 +1570,36 @@ section {
     font-size: 20px;
   }
 
-  .congrats-text {
-    padding: 25px;
-  }
-
   .shooting-star {
     display: none;
+  }
+  .cursor-heart {
+    display: none;
+  }
+
+  .congrats-text {
+    padding: 50px 30px 40px 30px;
+    transform: rotate(0deg);
+    border-radius: 6px;
+  }
+  .congrats-text::before,
+  .congrats-text::after {
+    display: none;
+  }
+  .letter-paragraph,
+  .letter-paragraph:first-child,
+  .letter-signature {
+    padding-left: 0;
+  }
+  .letter-paragraph:first-child {
+    font-size: 1.9rem;
+  }
+  .letter-signature {
+    text-align: center;
+  }
+
+  .film-note-inner {
+    padding: 30px 25px 40px;
   }
 }
 
@@ -1357,8 +1633,23 @@ section {
   }
 
   .congrats-text {
-    padding: 20px;
-    font-size: 0.95rem;
+    padding: 40px 22px 30px 22px;
+  }
+  .letter-paragraph {
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+  .letter-paragraph .highlight {
+    font-size: 1.25em;
+  }
+  .letter-paragraph:first-child {
+    font-size: 1.7rem;
+    margin-bottom: 22px;
+  }
+  .letter-signature {
+    font-size: 1.3rem;
+    margin-top: 30px;
+    padding-top: 18px;
   }
 
   .timeline,
@@ -1416,9 +1707,7 @@ section {
     width: 18px;
     height: 18px;
   }
-}
 
-@media (max-width: 480px) {
   .reasons-grid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 10px;
@@ -1432,48 +1721,42 @@ section {
   .reason-card-back {
     font-size: 0.75rem;
   }
-}
-/* ============================================================
-   ПОДСКАЗКА О ПАСХАЛКЕ
-   ============================================================ */
-.final-hint {
-  margin-top: 50px;
-  font-size: clamp(0.85rem, 2vw, 1rem);
-  color: rgba(255, 255, 255, 0.55);
-  font-style: italic;
-  letter-spacing: 0.5px;
-  line-height: 1.6;
-  padding: 12px 24px;
-  border: 1px dashed rgba(255, 107, 157, 0.4);
-  border-radius: 30px;
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 1.2s ease 3s;
-  animation: hintGlow 3s ease-in-out infinite 3s;
-}
 
-.final-section.visible .final-hint {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@keyframes hintGlow {
-  0%,
-  100% {
-    border-color: rgba(255, 107, 157, 0.4);
-    box-shadow: 0 0 0 rgba(255, 107, 157, 0);
-  }
-  50% {
-    border-color: rgba(255, 107, 157, 0.9);
-    box-shadow: 0 0 25px rgba(255, 107, 157, 0.4);
-  }
-}
-
-@media (max-width: 480px) {
   .final-hint {
     margin-top: 35px;
     font-size: 0.8rem;
     padding: 10px 18px;
+  }
+
+  .scroll-down {
+    bottom: 20px;
+    gap: 8px;
+  }
+  .scroll-text {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+  }
+  .scroll-arrow {
+    font-size: 1.5rem;
+  }
+
+  .film-note-section {
+    padding: 60px 15px;
+  }
+  .film-note-inner {
+    padding: 25px 18px 35px;
+  }
+  .film-note-time {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+  }
+  .film-note-video {
+    max-width: 100%;
+  }
+  .film-note-video video {
+    max-height: 400px;
+  }
+  .film-note-handwritten {
+    font-size: 1.2rem;
   }
 }

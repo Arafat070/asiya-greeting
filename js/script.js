@@ -85,7 +85,7 @@ function typeText() {
 
 // ========== ТАЙМЕР ==========
 // ⚠️ ИЗМЕНИ ДАТУ на день вашей первой встречи!
-const START_DATE = new Date("2025-02-17T21:00:00");
+const START_DATE = new Date("2025-02-15T20:00:00");
 
 function startTimer() {
   const daysEl = document.getElementById("days");
@@ -116,7 +116,7 @@ const congratsContent = `
 
 <p>Я долго думал, писать ли это, и всё-таки решил — потому что молчать больше не могу. Этот сайт, каждое слово здесь — <span class="highlight">от чистого сердца</span>.</p>
 
-<p>Прошло время. Много времени. Но знаешь, что я понял? Что ни один день не прошёл без мысли о тебе. Я вспоминал твой смех, твой голос, твои глаза. И с каждым днём всё яснее понимал — <span class="highlight">таких, как ты, не бывает некогда</span>. Такие, как ты, — одна на миллион. И я это упустил.</p>
+<p>Прошло время. Много времени. Но знаешь, что я понял? Что ни один день не прошёл без мысли о тебе. Я вспоминал твой смех, твой голос, твои глаза. И с каждым днём всё яснее понимал — <span class="highlight">таких, как ты, не бывает много</span>. Такие, как ты, — одна на миллион. И я это упустил.</p>
 
 <p>Сейчас я старше, спокойнее и честнее с собой. И я знаю точно: если бы можно было повернуть время вспять — я бы сделал всё иначе. <span class="highlight">Внимательнее. Терпеливее. Мягче. С тобой.</span></p>
 
@@ -125,125 +125,23 @@ const congratsContent = `
 <p class="congrats-signature">С днём рождения, Аси.<br>Ты — чудо. И я искренне верю,<br>что у тебя всё будет хорошо. <span class="emoji">💫</span></p>
 `;
 
-// ========== ПЕЧАТЬ ПОЗДРАВЛЕНИЯ ПО БУКВАМ ==========
 function renderCongratsText() {
   const container = document.getElementById("congratsText");
   container.innerHTML = "";
-
-  // Разбиваем на абзацы
   const paragraphs = congratsContent.match(/<p[^>]*>[\s\S]*?<\/p>/g) || [];
 
-  // Собираем все токены: буквы, пробелы, теги, знаки
-  const tasks = [];
-  paragraphs.forEach((p, pIndex) => {
+  paragraphs.forEach((p, index) => {
     const isSignature = p.includes("congrats-signature");
     const inner = p.replace(/^<p[^>]*>|<\/p>$/g, "");
-
-    // Разбиваем абзац на токены (теги и текст)
-    const tokens = inner.split(/(<[^>]+>)/g).filter((t) => t !== "");
-
-    tokens.forEach((token) => {
-      if (token.startsWith("<") && token.endsWith(">")) {
-        // Это HTML-тег — добавляем как атомарный элемент
-        tasks.push({ type: "tag", value: token, pIndex, isSignature });
-      } else {
-        // Разбиваем текст на отдельные символы
-        for (const ch of token) {
-          tasks.push({ type: "char", value: ch, pIndex, isSignature });
-        }
-      }
-    });
-
-    // Конец абзаца
-    tasks.push({ type: "paragraphEnd", pIndex, isSignature });
-  });
-
-  // Создаём абзацы заранее
-  const pElements = [];
-  paragraphs.forEach((p, i) => {
-    const pEl = document.createElement("div");
-    pEl.className = "congrats-paragraph";
-    if (p.includes("congrats-signature")) pEl.classList.add("signature");
+    const pEl = document.createElement("p");
+    pEl.className = "letter-paragraph";
+    if (isSignature) pEl.classList.add("letter-signature");
+    pEl.style.animationDelay = `${index * 0.4}s`;
+    pEl.innerHTML = inner;
     container.appendChild(pEl);
-    pElements.push(pEl);
   });
-
-  // Курсор
-  const cursor = document.createElement("span");
-  cursor.className = "typing-cursor";
-  cursor.textContent = "|";
-
-  // Отслеживаем активный span (чтобы добавлять символы в нужный формат)
-  const activeSpans = {}; // pIndex -> { element, tagStyle }
-  let lastPIndex = -1;
-
-  // Скорость печати (мс)
-  const SPEED = 28;
-
-  let i = 0;
-
-  function typeNext() {
-    if (i >= tasks.length) {
-      cursor.remove();
-      return;
-    }
-
-    const task = tasks[i];
-    const pEl = pElements[task.pIndex];
-
-    if (task.type === "tag") {
-      // Открывающий или закрывающий тег — оборачиваем следующий текст
-      const tag = task.value;
-      const match = tag.match(/^<(\w+)[^>]*>$/);
-      const closeMatch = tag.match(/^<\/(\w+)>$/);
-
-      if (match) {
-        // Открывающий тег
-        const span = document.createElement("span");
-        span.className = match[1];
-        pEl.appendChild(span);
-        activeSpans[task.pIndex] = { element: span, tag: match[1] };
-      } else if (closeMatch) {
-        // Закрывающий тег
-        activeSpans[task.pIndex] = null;
-      }
-    } else if (task.type === "char") {
-      // Символ — пишем в активный span или прямо в абзац
-      const activeSpan = activeSpans[task.pIndex];
-      const target = activeSpan ? activeSpan.element : pEl;
-
-      if (task.value === "\n") {
-        target.appendChild(document.createElement("br"));
-      } else {
-        target.appendChild(document.createTextNode(task.value));
-      }
-    } else if (task.type === "paragraphEnd") {
-      // Переносим курсор в конец нового абзаца
-      activeSpans[task.pIndex] = null;
-    }
-
-    // Переставляем курсор
-    const currentP = pElements[task.pIndex];
-    if (cursor.parentNode !== currentP) {
-      currentP.appendChild(cursor);
-    } else {
-      currentP.appendChild(cursor); // перемещаем в конец
-    }
-
-    // Небольшая задержка после конца абзаца — пауза
-    let delay = SPEED;
-    if (task.type === "char" && /[.!?]/.test(task.value)) delay = SPEED * 12;
-    else if (task.type === "char" && /[,;:—]/.test(task.value))
-      delay = SPEED * 5;
-    else if (task.type === "paragraphEnd") delay = 400;
-
-    i++;
-    setTimeout(typeNext, delay);
-  }
-
-  // Старт после небольшой задержки
-  setTimeout(typeNext, 500);
 }
+
 // ========== 100 ПРИЧИН ==========
 const reasons = [
   "За твою улыбку",
@@ -362,6 +260,21 @@ function renderReasons() {
         `;
     card.addEventListener("click", () => card.classList.toggle("flipped"));
     grid.appendChild(card);
+  });
+}
+
+// ========== ЗАПИСКА КАК В ФИЛЬМАХ ==========
+const filmNoteCard = document.getElementById("filmNoteCard");
+const filmVideo = document.getElementById("filmVideo");
+
+if (filmNoteCard) {
+  filmNoteCard.addEventListener("click", (e) => {
+    // Клик по видео не должен закрывать карточку
+    if (e.target.closest("video")) return;
+    filmNoteCard.classList.toggle("opened");
+    if (!filmNoteCard.classList.contains("opened") && filmVideo) {
+      filmVideo.pause();
+    }
   });
 }
 
@@ -622,6 +535,16 @@ playerToggle.addEventListener("click", () => {
     playerToggle.textContent = "▶";
   }
 });
+// ========== ПАУЗА МУЗЫКИ ПРИ ВИДЕО ЗАПИСКИ ==========
+const filmVideoEl = document.getElementById("filmVideo");
+if (filmVideoEl) {
+  filmVideoEl.addEventListener("play", () => {
+    if (!music.paused) {
+      music.pause();
+      playerToggle.textContent = "▶";
+    }
+  });
+}
 
 music.addEventListener("timeupdate", () => {
   if (music.duration) {
@@ -639,7 +562,7 @@ playerProgress.addEventListener("click", (e) => {
   if (music.duration) music.currentTime = percent * music.duration;
 });
 
-// ========== ПАУЗА МУЗЫКИ ПРИ ВОСПРОИЗВЕДЕНИИ ВИДЕО ==========
+// ========== ПАУЗА МУЗЫКИ ПРИ ВИДЕО ==========
 const specialVideo = document.getElementById("specialVideo");
 let musicWasPlayingBeforeVideo = false;
 
@@ -723,14 +646,15 @@ function animateHeart() {
 }
 animateHeart();
 
-// ========== ШАРИКИ ПО КЛИКУ ==========
+// ========== ШАРИКИ ==========
 const BALLOON_EMOJIS = ["🎈", "🎈", "🎈", "💖", "💕", "🌸"];
 document.addEventListener("click", (e) => {
   if (
     e.target.closest("button") ||
     e.target.closest(".music-player") ||
     e.target.closest(".lightbox") ||
-    e.target.closest("video")
+    e.target.closest("video") ||
+    e.target.closest(".film-note-card")
   )
     return;
   const balloon = document.createElement("div");
@@ -895,7 +819,27 @@ document
       console.error(error);
     }
   });
+// ========== ПОДСКАЗКА «ЛИСТАЙ ВНИЗ» ==========
+const scrollDown = document.querySelector(".scroll-down");
+if (scrollDown) {
+  scrollDown.addEventListener("click", () => {
+    const timerSection = document.querySelector(".timer-section");
+    if (timerSection) {
+      timerSection.scrollIntoView({ behavior: "smooth" });
+    }
+  });
 
+  // Скрываем подсказку при скролле вниз
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 150) {
+      scrollDown.style.opacity = "0";
+      scrollDown.style.pointerEvents = "none";
+    } else {
+      scrollDown.style.opacity = "";
+      scrollDown.style.pointerEvents = "";
+    }
+  });
+}
 // ========== ИНИЦИАЛИЗАЦИЯ ==========
 window.addEventListener("load", () => {
   setTimeout(typeText, 500);

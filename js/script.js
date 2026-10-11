@@ -85,7 +85,7 @@ function typeText() {
 
 // ========== ТАЙМЕР ==========
 // ⚠️ ИЗМЕНИ ДАТУ на день вашей первой встречи!
-const START_DATE = new Date("2025-02-15T20:00:00");
+const START_DATE = new Date("2025-02-17T20:00:00");
 
 function startTimer() {
   const daysEl = document.getElementById("days");
